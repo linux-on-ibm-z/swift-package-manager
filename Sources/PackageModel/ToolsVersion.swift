@@ -60,7 +60,7 @@ public struct ToolsVersion: CustomStringConvertible, Comparable {
     ///
     /// - precondition: prereleaseIdentifiers and buildMetadataIdentifier should not be present.
     public init(version: Version) {
-        precondition(version.prereleaseIdentifiers == [] && version.buildMetadataIdentifier == nil)
+        precondition(version.prereleaseIdentifiers == [] && version.buildMetadataIdentifier == [])
         _version = version
     }
 

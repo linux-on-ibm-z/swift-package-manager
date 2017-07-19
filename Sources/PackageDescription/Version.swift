@@ -14,9 +14,9 @@
 public struct Version {
     public let (major, minor, patch): (Int, Int, Int)
     public let prereleaseIdentifiers: [String]
-    public let buildMetadataIdentifier: String?
+    public let buildMetadataIdentifier: [String]
     
-    public init(_ major: Int, _ minor: Int, _ patch: Int, prereleaseIdentifiers: [String] = [], buildMetadataIdentifier: String? = nil) {
+    public init(_ major: Int, _ minor: Int, _ patch: Int, prereleaseIdentifiers: [String] = [], buildMetadataIdentifier: [String] = []) {
         self.major = Swift.max(major, 0)
         self.minor = Swift.max(minor, 0)
         self.patch = Swift.max(patch, 0)
@@ -53,9 +53,7 @@ extension Version: Hashable {
         result = (result &* mul) ^ UInt64(bitPattern: Int64(minor.hashValue))
         result = (result &* mul) ^ UInt64(bitPattern: Int64(patch.hashValue))
         result = prereleaseIdentifiers.reduce(result, { ($0 &* mul) ^ UInt64(bitPattern: Int64($1.hashValue)) })
-        if let build = buildMetadataIdentifier {
-            result = (result &* mul) ^ UInt64(bitPattern: Int64(build.hashValue))
-        }
+        result = buildMetadataIdentifier.reduce(result, { ($0 &* mul) ^ UInt64(bitPattern: Int64($1.hashValue)) })
         return Int(truncatingBitPattern: result)
     }
 }
@@ -124,15 +122,14 @@ extension Version {
 }
 
 // MARK: CustomStringConvertible
-
 extension Version: CustomStringConvertible {
     public var description: String {
         var base = "\(major).\(minor).\(patch)"
         if prereleaseIdentifiers.count > 0 {
             base += "-" + prereleaseIdentifiers.joined(separator: ".")
         }
-        if let buildMetadataIdentifier = buildMetadataIdentifier {
-            base += "+" + buildMetadataIdentifier
+        if buildMetadataIdentifier.count > 0 {
+            base += "+" + buildMetadataIdentifier[0]
         }
         return base
     }

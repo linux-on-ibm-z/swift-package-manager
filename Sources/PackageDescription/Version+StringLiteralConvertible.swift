@@ -68,11 +68,11 @@ extension Version {
             prereleaseIdentifiers = []
         }
 
-        var buildMetadataIdentifier: String? = nil
+        var buildMetadataIdentifier: [String] = []
         if let metadataStartIndex = metadataStartIndex {
             let buildMetadataCharacters = characters.suffix(from: characters.index(after: metadataStartIndex))
             if !buildMetadataCharacters.isEmpty {
-                buildMetadataIdentifier = String(buildMetadataCharacters)
+                buildMetadataIdentifier = [String(buildMetadataCharacters)]
             }
         }
         self.buildMetadataIdentifier = buildMetadataIdentifier
