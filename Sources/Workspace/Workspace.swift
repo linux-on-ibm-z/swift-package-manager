@@ -76,12 +76,15 @@ private class WorkspaceRepositoryManagerDelegate: RepositoryManagerDelegate {
     }
 
     func fetchingDidFinish(handle: RepositoryManager.RepositoryHandle, error: Swift.Error?) {
-        let diagnostic: Diagnostic? = error.flatMap({
-            let engine = DiagnosticsEngine()
-            engine.emit($0)
-            return engine.diagnostics.first
-        })
-        workspaceDelegate.fetchingDidFinish(repository: handle.repository.url, diagnostic: diagnostic)
+        if error != nil {
+            let diagnostic: Diagnostic? = error.flatMap({
+                let engine = DiagnosticsEngine()
+                engine.emit($0)
+                return engine.diagnostics.first
+            })
+            workspaceDelegate.fetchingDidFinish(repository: handle.repository.url, diagnostic: diagnostic)
+        }
+        workspaceDelegate.fetchingDidFinish(repository: handle.repository.url, diagnostic: nil)
     }
 
     func handleWillUpdate(handle: RepositoryManager.RepositoryHandle) {

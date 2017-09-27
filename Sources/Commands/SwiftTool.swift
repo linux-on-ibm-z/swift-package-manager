@@ -354,7 +354,10 @@ public class SwiftTool<Options: ToolOptions> {
     }
 
     private func printDiagnostics() {
-        for diagnostic in diagnostics.diagnostics {
+        let diags = diagnostics.diagnostics
+        //TODO: for diagnostic in diagnostics.diagnostics {
+        for i in 0..<diags.count{
+            let diagnostic = diags[i]
             print(diagnostic: diagnostic)
         }
     }
