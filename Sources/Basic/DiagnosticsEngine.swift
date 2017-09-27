@@ -266,7 +266,10 @@ public class DiagnosticsEngine: CustomStringConvertible {
 
     /// Merges contents of given engine.
     public func merge(_ engine: DiagnosticsEngine) {
-        for diagnostic in engine.diagnostics {
+        let diags = engine.diagnostics
+        for i in 0..<diags.count {
+        //for diagnostic in engine.diagnostics {
+            let diagnostic = diags[i]
             emit(data: diagnostic.data, location: diagnostic.location)
         }
     }
